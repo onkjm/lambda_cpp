@@ -36,7 +36,7 @@ cmake project is rsync to Ubuntu on docker container, and built.
 
 ### reference
 
-(Build C++ Applications in a Linux Docker Container with Visual Studio)[https://devblogs.microsoft.com/cppblog/build-c-applications-in-a-linux-docker-container-with-visual-studio/]
+[Build C++ Applications in a Linux Docker Container with Visual Studio](https://devblogs.microsoft.com/cppblog/build-c-applications-in-a-linux-docker-container-with-visual-studio/)
 
 compiled exec file can be copied to the host computer.
 ```
