@@ -1,0 +1,40 @@
+FROM ubuntu 
+
+# ssh, rsync, development-tools
+RUN apt-get update && apt-get install -y wget g++ gdb ninja-build rsync zip openssh-server make && \
+    mkdir -p /var/run/sshd && \
+    echo PasswordAuthentication yes >> /etc/ssh/sshd_config && \
+    ssh-keygen -A
+
+# CMake
+RUN wget https://github.com/microsoft/CMake/releases/download/v3.19.4268486/cmake-3.19.4268486-MSVC_2-Linux-x64.sh && \
+    chmod +x cmake-3.19.4268486-MSVC_2-Linux-x64.sh && \
+    ./cmake-3.19.4268486-MSVC_2-Linux-x64.sh --skip-license --prefix=/usr
+
+EXPOSE 22
+
+# create user
+RUN useradd -m -d /home/master -s /bin/bash -G sudo master && echo master:pass | chpasswd
+
+#### usage
+# docker build -t u-vs -f Dockerfile.ubuntu .
+# docker run -p 10022:22 -i -t u-vs /bin/bash
+# > service ssh start
+# > service --status-all
+# > [+] ssh
+
+#### some commands
+# docker start {container name}
+# docker exec -it {container name} /bin/bash
+# docker stop {container name}
+
+#### connection
+# host: localhost
+# port: 10022
+# user: master
+# pass: pass
+
+### copy file
+# docker ps -a
+# docker cp [ID]:[docker path] [host path]
+# example: docker cp d35dfb9a9b76:/home/master/.vs/cmaketest/out/build/linux-release/main/main C:\Users\winuser\Downloads\

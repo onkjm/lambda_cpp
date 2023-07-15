@@ -1,0 +1,30 @@
+FROM ubuntu 
+
+# pip3のインストール
+RUN apt-get update && apt-get upgrade && apt-get install -y python3-pip
+
+# python 依存パッケージのインストール
+COPY requirements.txt  .
+RUN  pip3 install -r requirements.txt --target "${LAMBDA_TASK_ROOT}"
+
+# AWS提供の言語ごとのRuntime Interface Client(RIC)を組み込む
+# https://qiita.com/a_b_/items/337c4afee2e330efefe1
+RUN mkdir /function && pip3 install --target /function awslambdaric
+  
+# Copy function code
+COPY app.py /function/
+COPY main /function/
+
+WORKDIR /function
+
+ENTRYPOINT [ "/usr/bin/python3", "-m", "awslambdaric" ]
+
+# Set the CMD to your handler (could also be done as a parameter override outside of the Dockerfile)
+CMD [ "app.handler" ] 
+
+#### usage
+# docker build -t testapp -f Dockerfile.ubuntu.lambda .
+# aws ecr get-login-password --region ap-northeast-1 | docker login --username AWS --password-stdin 123456789101.dkr.ecr.ap-northeast-1.amazonaws.com
+# aws ecr create-repository --region ap-northeast-1 --repository-name testapp --image-scanning-configuration scanOnPush=true --image-tag-mutability MUTABLE
+# docker tag  testapp:latest 123456789101.dkr.ecr.ap-northeast-1.amazonaws.com/testapp:latest
+# docker push 123456789101.dkr.ecr.ap-northeast-1.amazonaws.com/testapp:latest   
