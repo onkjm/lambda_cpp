@@ -1,0 +1,17 @@
+FROM ubuntu 
+
+# update apt-get, install pip3, postgresql
+RUN \
+    apt-get update && \
+    apt-get upgrade
+RUN \
+    apt-get install -y python3-pip
+# RUN \
+#    echo 6 | apt-get install -y postgresql
+
+#### related commands
+# docker build -t ubuntu-pip3-postgresql -f Dockerfile.ubuntu.pip3.postgresql .
+# docker run --name tmp -i -t ubuntu-pip3-postgresql /bin/bash
+# docker commit tmp ubuntu-pip3-postgresql
+# docker save ubuntu-pip3-postgresql -o upip3pq.tar
+# docker load -i upip3pq.tar

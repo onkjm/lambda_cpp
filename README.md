@@ -67,6 +67,15 @@ create aws lambda function on aws, and test run.
 
 you can see the app running on aws lambda.
 
+## others
+
+### base
+
+Dockerfile and image-tar-file of ubuntu with pip3 and postgresql.
+
+- Dockerfile does not install postgresql. You should install postgresql mannually. 
+- .tar is the image that is saved after the manual installation of postgresql.
+
 
 
 
